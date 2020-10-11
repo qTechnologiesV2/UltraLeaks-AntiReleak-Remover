@@ -1,2 +1,7 @@
 # UltraLeaks-AntiReleak-Remover
-Remove UltraLeaks AntiReleak system
+Remove https://ultraleaks.eu AntiReleak system
+
+Usage:
+```sh
+$ java -jar Remover.jar input.jar
+```
