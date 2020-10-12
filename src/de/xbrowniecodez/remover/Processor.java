@@ -23,7 +23,6 @@ public class Processor {
 		removeObsoleteInjection(classNode);
 		removeBootstrapMethod(classNode);
 		removeXORMethod(classNode);
-		removeHostsCheckMethod(classNode);
 		attrRemover(classNode);
 		signatureRemover(classNode);
 
@@ -98,30 +97,6 @@ public class Processor {
 		}
 	}
 
-	private void removeHostsCheckMethod(ClassNode classNode) throws Throwable {
-		Iterator<MethodNode> iterator = classNode.methods.iterator();
-		while (iterator.hasNext()) {
-			MethodNode attributeIterator = (MethodNode) iterator.next();
-			if (attributeIterator.name.equalsIgnoreCase("onEnable")) {
-				InsnList attribute = attributeIterator.instructions;
-				AbstractInsnNode insnNode = attribute.get(0);
-				AbstractInsnNode insnNode1 = attribute.get(1);
-				AbstractInsnNode insnNode2 = attribute.get(2);
-				if (insnNode.getType() == 5 && insnNode.getOpcode() == 184
-						&& ((MethodInsnNode) insnNode).desc.equals("()V")) {
-					attribute.remove(insnNode);
-					attribute.remove(insnNode1);
-					attribute.remove(insnNode2);
-				}
-			} else if (attributeIterator.desc.equals("()V") && attributeIterator.access == 9) {
-				iterator.remove();
-			} else if (attributeIterator.desc.equals("(Ljava/lang/String;)Ljava/lang/String;")
-					&& attributeIterator.access == 4170) {
-				iterator.remove();
-			}
-		}
-
-	}
 
 	private void invokeDynamicTransfomer(ClassNode classNode) {
 		String bootstrapDesc = "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/Class;Ljava/lang/String;I)Ljava/lang/invoke/CallSite;";
